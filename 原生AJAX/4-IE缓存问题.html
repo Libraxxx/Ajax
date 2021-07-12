@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IE缓存问题</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 100px;
+            border: 1px solid #000;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<!--IE缓存：IE浏览器对AJAX请求的结果做一个缓存，这样就会导致下一次再去发送请求时，它走的是本地的缓存，而不是服务器返回的最新数据
+ 这样的话，对于时效性比较强的场景，AJAX这个缓存就会影响这个结果，不能够正常去显示 -->
+<!-- 解决方法：增加一个参数 t= + Date.now()-->
+
+<body>
+    <button>发送请求</button>
+    <div class="box"></div>
+    <script>
+        const btn = document.querySelector('button');
+        const text = document.querySelector('.box');
+        btn.addEventListener('click', function() {
+            // 向服务端发送请求
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://127.0.0.1:8000/ie?t=" + Date.now());
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        text.innerHTML = xhr.response;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

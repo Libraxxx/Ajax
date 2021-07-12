@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取消请求</title>
+</head>
+
+<body>
+    <button class="sendRequest">发送请求</button>
+    <button class="cancleRequest">取消请求</button>
+    <script>
+        const btnSend = document.querySelector(".sendRequest");
+        const btnCancle = document.querySelector(".cancleRequest");
+        let xhr = null;
+        btnSend.onclick = function() {
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://127.0.0.1:8000/delay");
+            xhr.send();
+        };
+        // abort 取消请求
+        btnCancle.onclick = function() {
+            xhr.abort();
+        };
+    </script>
+</body>
+
+</html>

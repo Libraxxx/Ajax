@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重复请求问题</title>
+</head>
+
+<body>
+    <button class="sendRequest">发送请求</button>
+    <script>
+        const btnSend = document.querySelector(".sendRequest");
+        const btnCancle = document.querySelector(".cancleRequest");
+        let xhr = null;
+        // 标识变量 判断当前请求是否正在发送
+        let isSending = false;
+        btnSend.onclick = function() {
+            // 判断标识变量
+            if (isSending) {
+                // 如果正在发送，则取消该请求，创建一个新请求
+                xhr.abort();
+            }
+            xhr = new XMLHttpRequest();
+            isSending = true; // 正在发送请求
+            xhr.open("GET", "http://127.0.0.1:8000/delay");
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    // 请求发送完成
+                    isSending = false;
+                }
+            }
+        };
+        // abort 取消请求
+        btnCancle.onclick = function() {
+            xhr.abort();
+        };
+    </script>
+</body>
+
+</html>
